@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find User - GitHub</title>
+    <style>
+
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        .icon-github {
+            width: 200px;
+            margin: 20px 0;
+        }
+        body{
+            background-color: #0d1117;
+        }
+        h1{
+            color: #f0f6fc;
+            padding: 16px 0;
+        }
+        button{
+            width: auto;
+            height: 100%;
+            background-color: #0d1117;
+            color: #f0f6fc;
+            border: 1px solid rgba(240, 246, 252, 0.2);
+            border-radius: 8px;
+            font-size: 32px;
+            margin: 0;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+        }
+        button:hover{
+            background-color: #1f6feb;
+            color: #f0f6fc;
+        }
+        #nome-input{
+            width: 100%;
+            height: 100%;
+            background-color: #0d1117;
+            color: #f0f6fc;
+            border: 1px solid rgba(240, 246, 252, 0.2);
+            border-radius: 8px;
+            font-size: larger;
+        }
+        #nome-input:focus{
+            outline: none;
+            border-color: #1f6feb;
+            text-align: center;
+        }
+        #nome-input::placeholder{
+            color: #f0f6fc;
+            opacity: 0.5;
+            text-align: center;
+        }
+        .container-form{
+            display: flex;
+            height: 50px;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+        }
+        aside{
+            color: #f0f6fc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 20px;
+            height: 100%;
+        }
+        .user-cartao img{
+            border-radius: 16px !important;
+            width: 200px !important;
+        }
+        .user-cartao h2{
+            font-size: 32px;
+        }
+        .user-cartao p{
+            font-size: larger;
+        }
+        a{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            color:#1f6feb;
+            background: rgba(31,111,235,0.08);
+            padding:8px 12px;
+            border-radius:10px;
+            text-decoration:none;
+            font-size:1.05rem;
+            font-weight:700;
+            transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+            box-shadow: 0 2px 6px rgba(2,6,23,0.06);
+        }
+        .user-cartao a{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            color:#1f6feb;
+            background: rgba(31,111,235,0.08);
+            padding:8px 12px;
+            border-radius:10px;
+            text-decoration:none;
+            font-size:1.05rem;
+            font-weight:700;
+            transition:transform .12s ease, box-shadow .12s ease, background .12s ease;
+            box-shadow: 0 2px 6px rgba(2,6,23,0.06);
+        }
+        .user-cartao a:hover{
+            background: rgba(31,111,235,0.16);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(2,6,23,0.12);
+        }
+        .user-cartao a:active{ transform: translateY(0); }
+        .user-cartao a::after{ content:'↗'; margin-left:6px; font-size:0.9rem; opacity:0.95; }
+        .user-cartao{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            height: 100%;
+        }
+        #resultado.error{
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img class="icon-github" src="https://imgs.search.brave.com/eMdjRt3-HwJZu1B8DHmxh0atM8SJ_PdxS65v8KZQe8c/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvcHJl/dmlld3MvMDE3LzEx/OS82NjAvbm9uXzJ4/L2dpdGh1Yi1sb2dv/LWdpdC1odWItaWNv/bi13aXRoLXRleHQt/b24td2hpdGUtYW5k/LWJsYWNrLWJhY2tn/cm91bmQtZnJlZS12/ZWN0b3IuanBn" alt="logotipos do github/preto&branco">
+        <label id="form">
+            <h1>Pesquise um usuário do GitHub</h1>
+            <div class="container-form">
+                <input type="text" name="nome" id="nome-input">
+                <button id="load-btn">Carregar</button>
+            </div>
+        </label>
+        <aside id="resultado"></aside>
+        <footer>
+            <a href="https://github.com/bernardoHeckler/ajax/blob/master/README.md" target="_blank" rel="noopener noreferrer">Sobre este projeto</a>
+        </footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#load-btn').on('click', function() {
+            $.getJSON('https://api.github.com/users/'+ $('#nome-input').val())
+                .done(function(data) {
+                    var cartao = $('<div>').addClass('user-cartao');
+                    $('<img>').attr({src: data.avatar_url, alt: data.login}).css({width: '96px', borderRadius: '6px'}).appendTo(cartao);
+                    $('<h2>').text(data.name || data.login).appendTo(cartao);
+                    if (data.bio) $('<p>').text(data.bio).appendTo(cartao);
+                    $('<p>').html('<strong>Repositórios:</strong> ' + data.public_repos + ' &nbsp; <strong>Seguidores:</strong> ' + data.followers + ' &nbsp; <strong>Seguindo:</strong> ' + data.following).appendTo(cartao);
+                    $('<p>').append($('<a>').attr({href: data.html_url, target: '_blank', rel: 'noopener'}).text('Ver no GitHub')).appendTo(cartao);
+                    $('#resultado').empty().removeClass('error').append(cartao);
+                })
+                .fail(function() {
+                    $('#resultado').empty().addClass('error').text('Não encontrei o usuário');
+                    $('#nome-input').val('');
+                });
+        });
+    </script>
+</body>
+</html>
