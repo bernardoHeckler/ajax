@@ -5,7 +5,7 @@ Objetivo é aprender o que é e como funciona Ajax. Basicamente Ajax é um conju
 ![imagem retirado video sobre ajax](imagens/comunicacao.png)
 
 
-# jQuery na Prática
+# Ajax na Prática
 
 Neste arquivo aprendi alguns conceitos. Resultado: [Requisição com metodo GET, pesquisa usuarios e mostra seus dados, usando AJAX](index.html)
 
